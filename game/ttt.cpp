@@ -3,78 +3,141 @@
 
 using namespace std;
 
+bool select(bool xturn, int cpos, char *gptr);
+void print_grid(char *gptr);
+void clean_grid(char *gptr);
+
 int main()
 {
     char grid[9];
     char *gptr = grid;
-    int cposition = 0;
+    clean_grid(gptr);
+    int cpos = 0;
 
     bool moved = false;
     bool xturn = false;
 
     while (true)
     {
-        cout << "1" ;
         char tmp;
         cin >> tmp;
-        while (true && (!moved))
+        while (!moved)
         {
-            cout << "0" ;
-            switch (tmp)
+            if (tmp == 'a')
             {
-            case 'a':
-                if (cposition - 1 < 0)
+                if ((cpos - 1) < 0)
                 {
                     break;
                 }
                 else
                 {
-                    cposition--;
+                    cpos--;
                     moved = !moved;
                 }
-                break;
-            case 'd':
-                if (cposition + 1 > 8)
-                {
-                    break;
-                }
-                else
-                {
-                    cposition++;
-                    moved = !moved;
-                }
-                break;
-            case 'w':
-                if (cposition - 3 < 0)
-                {
-                    break;
-                }
-                else
-                {
-                    cposition -= 3;
-                    moved = !moved;
-                }
-                break;
-            case 's':
-                if (cposition + 3 > 8)
-                {
-                    break;
-                }
-                else
-                {
-                    cposition += 3;
-                    moved = !moved;
-                }
-                break;
-            default:
-                break;
             }
-            if (moved) 
+            else if (tmp == 'd')
+            {
+                if ((cpos + 1) > 8)
+                {
+                    break;
+                }
+                else
+                {
+                    cpos++;
+                    moved = !moved;
+                }
+            }
+            else if (tmp == 'w')
+            {
+                if ((cpos - 3) < 0)
+                {
+                    break;
+                }
+                else
+                {
+                    cpos -= 3;
+                    moved = !moved;
+                }
+            }
+            else if (tmp == 's')
+            {
+                if ((cpos + 3) > 8)
+                {
+                    break;
+                }
+                else
+                {
+                    cpos += 3;
+                    moved = !moved;
+                }
+            }
+            else if (tmp == 'j')
+            {
+                xturn = select(xturn, cpos, gptr);
+                moved = !moved;
+            }
+
+            if (moved)
             {
                 break;
             }
         }
-        cout << cposition << endl;
-        moved = !moved;
+
+        print_grid(gptr);
+
+        if (moved)
+        {
+            cout << endl << cpos << endl;
+            moved = !moved;
+            continue;
+        }
+    }
+}
+
+bool select(bool xturn, int cpos, char *gptr)
+{
+    if (xturn)
+    {
+        *(gptr + cpos) = 'x';
+    }
+    else
+    {
+        *(gptr + cpos) = 'o';
+    }
+    return !xturn;
+}
+
+void print_grid(char *gptr)
+{
+    int i = 0;
+    for (i = 0; i < 9; i++)
+    {
+        if ((i == 2) || (i==5) || (i==8))
+        {
+            cout << *(gptr + i);            
+        }
+        else
+        {
+            cout << *(gptr + i) << "|";
+        }
+        if ((i==2) || (i==5))
+        {
+            cout << endl;
+            cout << "_|_|_" << endl;
+        }
+        if (i==8)
+        {
+            cout << endl;
+            cout << " | |" << endl;
+        }
+    }
+}
+
+void clean_grid(char *gptr)
+{
+    int i = 0;
+    for (i = 0; i < 9; i++)
+    {
+        *(gptr + i) = '\0';
     }
 }
