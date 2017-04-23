@@ -6,7 +6,7 @@ using namespace std;
 bool select(bool xturn, int cpos, char *gptr);
 bool is_x_win(char *gptr, bool xturn);
 bool is_win(char *g, char a);
-bool game_over (char *gptr, char a);
+bool game_over(char *gptr, char a);
 void print_grid(char *gptr);
 void clean_grid(char *gptr);
 
@@ -90,19 +90,46 @@ int main()
 
         if (moved)
         {
-            game_over(gptr, 'x');
-            game_over(gptr, 'o');
+            if (game_over(gptr, 'x'))
+            {
+                while (1) {
+                    cin >> tmp;
+                    if (tmp == 'j')
+                    {
+                        cpos = 0;
+                        clean_grid(gptr);
+                        xturn = true;
+                        break;
+                    }
+                }
+            }
+            else if (game_over(gptr, 'o'))
+            {
+                while (1) {
+                    cin >> tmp;
+                    if (tmp == 'j')
+                    {
+                        cpos = 0;
+                        clean_grid(gptr);
+                        xturn = true;
+                        break;
+                    }
+                }
+            }
             moved = !moved;
             continue;
         }
     }
 }
 
-bool game_over (char *gptr, char a) {
+bool game_over(char *gptr, char a)
+{
     if (is_win(gptr, a) == 1)
     {
-        cout << "GAME OVER" << endl << "Winner is " << a << endl;
-    } 
+        cout << "GAME OVER" << endl
+             << "Winner is " << a << endl;
+        return true;
+    }
 }
 
 bool select(bool xturn, int cpos, char *gptr)
@@ -135,23 +162,39 @@ bool select(bool xturn, int cpos, char *gptr)
 
 bool is_win(char *g, char a)
 {
-    if ((a == *(g+0)) && (a == *(g+3)) && (a == *(g+6))) {
-        return true;}
-    else if ((a == *(g+1)) && (a == *(g+4)) && (a == *(g+7))) {
-        return true;}
-    else if ((a == *(g+2)) && (a == *(g+5)) && (a == *(g+8))) {
-        return true;}
-    else if ((a == *(g+0)) && (a == *(g+1)) && (a == *(g+2))) {
-        return true;}
-    else if ((a == *(g+3)) && (a == *(g+4)) && (a == *(g+5))) {
-        return true;}
-    else if ((a == *(g+6)) && (a == *(g+7)) && (a == *(g+8))) {
-        return true;}
-    else if ((a == *(g+0)) && (a == *(g+4)) && (a == *(g+8))) {
-        return true;}
-    else if ((a == *(g+2)) && (a == *(g+4)) && (a == *(g+6))) {
-        return true;}
-    else 
+    if ((a == *(g + 0)) && (a == *(g + 3)) && (a == *(g + 6)))
+    {
+        return true;
+    }
+    else if ((a == *(g + 1)) && (a == *(g + 4)) && (a == *(g + 7)))
+    {
+        return true;
+    }
+    else if ((a == *(g + 2)) && (a == *(g + 5)) && (a == *(g + 8)))
+    {
+        return true;
+    }
+    else if ((a == *(g + 0)) && (a == *(g + 1)) && (a == *(g + 2)))
+    {
+        return true;
+    }
+    else if ((a == *(g + 3)) && (a == *(g + 4)) && (a == *(g + 5)))
+    {
+        return true;
+    }
+    else if ((a == *(g + 6)) && (a == *(g + 7)) && (a == *(g + 8)))
+    {
+        return true;
+    }
+    else if ((a == *(g + 0)) && (a == *(g + 4)) && (a == *(g + 8)))
+    {
+        return true;
+    }
+    else if ((a == *(g + 2)) && (a == *(g + 4)) && (a == *(g + 6)))
+    {
+        return true;
+    }
+    else
     {
         return false;
     }
