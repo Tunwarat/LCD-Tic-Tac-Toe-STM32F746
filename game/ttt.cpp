@@ -4,6 +4,9 @@
 using namespace std;
 
 bool select(bool xturn, int cpos, char *gptr);
+bool is_x_win(char *gptr, bool xturn);
+bool is_win(char *g, char a);
+bool game_over (char *gptr, char a);
 void print_grid(char *gptr);
 void clean_grid(char *gptr);
 
@@ -15,7 +18,7 @@ int main()
     int cpos = 0;
 
     bool moved = false;
-    bool xturn = false;
+    bool xturn = true;
 
     while (true)
     {
@@ -87,11 +90,19 @@ int main()
 
         if (moved)
         {
-            cout << endl << cpos << endl;
+            game_over(gptr, 'x');
+            game_over(gptr, 'o');
             moved = !moved;
             continue;
         }
     }
+}
+
+bool game_over (char *gptr, char a) {
+    if (is_win(gptr, a) == 1)
+    {
+        cout << "GAME OVER" << endl << "Winner is " << a << endl;
+    } 
 }
 
 bool select(bool xturn, int cpos, char *gptr)
@@ -107,25 +118,64 @@ bool select(bool xturn, int cpos, char *gptr)
     return !xturn;
 }
 
+// bool is_x_win(char *gptr, bool xturn)
+// {
+//     if (xturn)
+//     {
+//         char t = 'x';
+//         return is_win(gptr, t);
+//     }
+//     else if (!xturn)
+//     {
+//         cout << "this is o turn" << endl;
+//         char t = 'o';
+//         return is_win(gptr, t);
+//     }
+// }
+
+bool is_win(char *g, char a)
+{
+    if ((a == *(g+0)) && (a == *(g+3)) && (a == *(g+6))) {
+        return true;}
+    else if ((a == *(g+1)) && (a == *(g+4)) && (a == *(g+7))) {
+        return true;}
+    else if ((a == *(g+2)) && (a == *(g+5)) && (a == *(g+8))) {
+        return true;}
+    else if ((a == *(g+0)) && (a == *(g+1)) && (a == *(g+2))) {
+        return true;}
+    else if ((a == *(g+3)) && (a == *(g+4)) && (a == *(g+5))) {
+        return true;}
+    else if ((a == *(g+6)) && (a == *(g+7)) && (a == *(g+8))) {
+        return true;}
+    else if ((a == *(g+0)) && (a == *(g+4)) && (a == *(g+8))) {
+        return true;}
+    else if ((a == *(g+2)) && (a == *(g+4)) && (a == *(g+6))) {
+        return true;}
+    else 
+    {
+        return false;
+    }
+}
+
 void print_grid(char *gptr)
 {
     int i = 0;
     for (i = 0; i < 9; i++)
     {
-        if ((i == 2) || (i==5) || (i==8))
+        if ((i == 2) || (i == 5) || (i == 8))
         {
-            cout << *(gptr + i);            
+            cout << *(gptr + i);
         }
         else
         {
             cout << *(gptr + i) << "|";
         }
-        if ((i==2) || (i==5))
+        if ((i == 2) || (i == 5))
         {
             cout << endl;
             cout << "_|_|_" << endl;
         }
-        if (i==8)
+        if (i == 8)
         {
             cout << endl;
             cout << " | |" << endl;
