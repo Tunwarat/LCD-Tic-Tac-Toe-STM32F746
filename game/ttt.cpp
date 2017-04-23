@@ -116,8 +116,8 @@ int main()
                     }
                 }
             }
-            moved = !moved;
-            continue;
+            moved = !moved; //ให้สถานะของเกมเป็นไม่มูฟ(เริ่มใหม่)
+            continue; //กลับไปเริ่มloopเดิม
         }
     }
 }
