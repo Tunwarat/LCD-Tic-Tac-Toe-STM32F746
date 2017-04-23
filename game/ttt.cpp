@@ -3,7 +3,7 @@
 
 using namespace std;
 
-bool select(bool xturn, int cpos, char *gptr);
+bool select(bool xturn, int cpos, char *gptr); 
 bool is_x_win(char *gptr, bool xturn);
 bool is_win(char *g, char a);
 bool game_over(char *gptr, char a);
@@ -12,8 +12,8 @@ void clean_grid(char *gptr);
 
 int main()
 {
-    char grid[9];
-    char *gptr = grid;
+    char grid[9];//แบบนี้ต้องใช้pointerช่วย
+    char *gptr = grid;//gptr ชี้ไปที่ช่อง0เสมอ
     clean_grid(gptr);
     int cpos = 0;
 
@@ -136,7 +136,7 @@ bool select(bool xturn, int cpos, char *gptr)
 {
     if (xturn)
     {
-        *(gptr + cpos) = 'x';
+        *(gptr + cpos) = 'x'; //*(gptr + cpos) คือ grid[cpos] เช่น grid[0]คือช่อง0
     }
     else
     {
