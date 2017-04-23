@@ -166,3 +166,7 @@
 .\build\main.o: mbed/TARGET_DISCO_F746NG/TARGET_STM/TARGET_STM32F7/device/stm32f7xx_hal.h
 .\build\main.o: BSP_DISCO_F746NG/Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h
 .\build\main.o: BSP_DISCO_F746NG/Drivers/BSP/STM32746G-Discovery/../../../Utilities/Fonts/fonts.h
+.\build\main.o: TS_DISCO_F746NG\TS_DISCO_F746NG.h
+.\build\main.o: BSP_DISCO_F746NG/Drivers/BSP/STM32746G-Discovery/stm32746g_discovery_ts.h
+.\build\main.o: BSP_DISCO_F746NG/Drivers/BSP/STM32746G-Discovery/../Components/ft5336/ft5336.h
+.\build\main.o: BSP_DISCO_F746NG/Drivers/BSP/STM32746G-Discovery/../Components/ft5336/../Common/ts.h

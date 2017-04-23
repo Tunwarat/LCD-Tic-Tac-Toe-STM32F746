@@ -11,6 +11,10 @@ AnalogIn AinK(A0);
 AnalogIn AinX(A1);
 AnalogIn AinY(A2);
 
+uint8_t dir;
+
+    float AK, AX, AY;
+
 bool select(bool xturn, int cpos, char *gptr);
 bool is_x_win(char *gptr, bool xturn);
 bool is_win(char *g, char a);
@@ -21,6 +25,7 @@ void clean_grid(char *gptr);
 void lcdDisplayXO(uint16_t x, uint16_t y, char *g);
 void cursorDisplay(uint16_t x, uint16_t y);
 void print_cursor(int pos);
+void read_adc();
 
 int main()
 {
@@ -33,19 +38,19 @@ int main()
     bool moved = false;
     bool xturn = true;
 
-    lcd.DisplayStringAt(0, LINE(1), (uint8_t *)"TIC TAC TOE", LEFT_MODE);
+    lcd.DisplayStringAt(0, LINE(1), (uint8_t *)"LCD TIC TAC TOE", LEFT_MODE);
+    lcd.DisplayStringAt(0, LINE(2), (uint8_t *)"BY TUNWARAT CHAMPASRI", LEFT_MODE);
     wait(2.0);
 
-    lcd.Clear(LCD_COLOR_DARKGREEN);
-    lcd.SetBackColor(LCD_COLOR_DARKGREEN);
-    lcd.SetTextColor(LCD_COLOR_YELLOW);
+    lcd.Clear(LCD_COLOR_CUSTOM1);
+    lcd.SetBackColor(LCD_COLOR_CUSTOM1);
+    lcd.SetTextColor(LCD_COLOR_CUSTOM2);
 
     lcd.DrawLine(160, 0, 160, 272);
     lcd.DrawLine(160 * 2, 0, 160 * 2, 272);
     lcd.DrawLine(0, 90, 480, 90);
     lcd.DrawLine(0, 180, 480, 180);
 
-    float AK, AX, AY;
     // uint16_t ADCData;
 
     pc.baud(9600);
@@ -54,34 +59,10 @@ int main()
 
     while (1)
     {
-        wait(1);
-        AK = AinK.read();
-        AX = AinX.read();
-        AY = AinY.read();
-        uint8_t dir;
-        if (AX > 0.9)
-        {
-            dir = 1;
-        }
-        else if (AY > 0.9)
-        {
-            dir = 2;
-        }
-        else if (AX < 0.1)
-        {
-            dir = 3;
-        }
-        else if (AY < 0.1)
-        {
-            dir = 4;
-        }
-        else if (AK < 0.2)
-        {
-            dir = 0;
-        } else 
-				{
-					dir = '5';
-				}
+			dir = 5;
+			pc.printf("please wait\n\r");
+        wait(0.15);
+        read_adc();
 				
 				pc.printf("\n\r%d\n\r", dir);
 
@@ -162,7 +143,9 @@ int main()
             {
                 while (1)
                 {
-                    //                    cin >> dir;
+                    
+										read_adc();
+									wait(0.5);
                     if (dir == 0)
                     {
                         cpos = 0;
@@ -176,7 +159,9 @@ int main()
             {
                 while (1)
                 {
-                    //                    cin >> dir;
+                    
+										read_adc();
+									wait(0.5);
                     if (dir == 0)
                     {
                         cpos = 0;
@@ -191,9 +176,9 @@ int main()
         }
         //		pc.printf("ADCData = 0x%04X\n\r", ADCData);
   
-				pc.printf("please wait\n");
-				wait(2.0);
-        cursor.Clear(LCD_COLOR_DARKGREEN);
+			//	pc.printf("please wait\n\r");
+		//		wait(3.0);
+        cursor.Clear(LCD_COLOR_CUSTOM1);
 				print_grid(gptr);
     }
 }
@@ -286,39 +271,39 @@ void print_grid(char *gptr)
     {
         if (i == 0)
         {
-            lcdDisplayXO(20, 20, (gptr + i));
+            lcdDisplayXO(80, LINE(2), (gptr + i));
         }
         else if (i == 1)
         {
-            lcdDisplayXO(40, 20, (gptr + i));
+            lcdDisplayXO(240, LINE(2), (gptr + i));
         }
         else if (i == 2)
         {
-            lcdDisplayXO(60, 20, (gptr + i));
+            lcdDisplayXO(400, LINE(2), (gptr + i));
         }
         else if (i == 3)
         {
-            lcdDisplayXO(20, 40, (gptr + i));
+            lcdDisplayXO(80, LINE(5), (gptr + i));
         }
         else if (i == 4)
         {
-            lcdDisplayXO(40, 40, (gptr + i));
+            lcdDisplayXO(240, LINE(5), (gptr + i));
         }
         else if (i == 5)
         {
-            lcdDisplayXO(60, 40, (gptr + i));
+            lcdDisplayXO(400, LINE(5), (gptr + i));
         }
         else if (i == 6)
         {
-            lcdDisplayXO(20, 60, (gptr + i));
+            lcdDisplayXO(80, LINE(9), (gptr + i));
         }
         else if (i == 7)
         {
-            lcdDisplayXO(40, 60, (gptr + i));
+            lcdDisplayXO(240, LINE(9), (gptr + i));
         }
         else if (i == 8)
         {
-            lcdDisplayXO(60, 60, (gptr + i));
+            lcdDisplayXO(400, LINE(9), (gptr + i));
         }
     }
 		
@@ -357,39 +342,39 @@ void print_cursor(int pos)
     int i = pos;
     if (i == 0)
     {
-        cursorDisplay(20, LINE(1));
+        cursorDisplay(80, LINE(2));
     }
     else if (i == 1)
     {
-        cursorDisplay(40, LINE(1));
+        cursorDisplay(240, LINE(2));
     }
     else if (i == 2)
     {
-        cursorDisplay(60, LINE(1));
+        cursorDisplay(400, LINE(2));
     }
     else if (i == 3)
     {
-        cursorDisplay(20, LINE(2));
+        cursorDisplay(80, LINE(5));
     }
     else if (i == 4)
     {
-        cursorDisplay(40, LINE(2));
+        cursorDisplay(240, LINE(5));
     }
     else if (i == 5)
     {
-        cursorDisplay(60, LINE(2));
+        cursorDisplay(400, LINE(5));
     }
     else if (i == 6)
     {
-        cursorDisplay(20, LINE(3));
+        cursorDisplay(80, LINE(9));
     }
     else if (i == 7)
     {
-        cursorDisplay(40, LINE(3));
+        cursorDisplay(240, LINE(9));
     }
     else if (i == 8)
     {
-        cursorDisplay(60, LINE(3));
+        cursorDisplay(400, LINE(9));
     }
 }
 
@@ -400,4 +385,35 @@ void clean_grid(char *gptr)
     {
         *(gptr + i) = '\0';
     }
+}
+
+
+void read_adc()
+{
+				AK = AinK.read();
+        AX = AinX.read();
+        AY = AinY.read();
+        if (AX > 0.9)
+        {
+            dir = 1;
+        }
+        else if (AY > 0.9)
+        {
+            dir = 2;
+        }
+        else if (AX < 0.1)
+        {
+            dir = 3;
+        }
+        else if (AY < 0.1)
+        {
+            dir = 4;
+        }
+        else if (AK < 0.2)
+        {
+            dir = 0;
+        } else 
+				{
+					dir = '5';
+				}
 }
