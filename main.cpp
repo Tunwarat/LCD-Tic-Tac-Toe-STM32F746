@@ -1,5 +1,6 @@
 #include "mbed.h"
 #include "LCD_DISCO_F746NG.h"
+#include "TS_DISCO_F746NG.h"
 
 LCD_DISCO_F746NG lcd;
 LCD_DISCO_F746NG cursor;
@@ -77,9 +78,12 @@ int main()
         else if (AK < 0.2)
         {
             dir = 0;
-        }
-
-        sprintf((char *)text, "x=%f     ", AK);
+        } else 
+				{
+					dir = '5';
+				}
+				
+				pc.printf("\n\r%d\n\r", dir);
 
         pc.printf("AK = %1.3f\n\r", AK);
         pc.printf("AX = %1.3f\n\r", AX);
@@ -139,11 +143,10 @@ int main()
             {
                 xturn = select(xturn, cpos, gptr);
                 moved = !moved;
-            }
-            else
-            {
-                break;
-            }
+            } else 
+						{
+								break;
+						}
 
             if (moved)
             {
@@ -318,6 +321,30 @@ void print_grid(char *gptr)
             lcdDisplayXO(60, 60, (gptr + i));
         }
     }
+		
+		for (i = 0; i < 9; i++)
+    {
+        if ((i == 2) || (i == 5) || (i == 8))
+        {
+					pc.printf("%c", *(gptr + i));
+        }
+        else
+        {
+					pc.printf("%c|", *(gptr + i));
+        }
+        if ((i == 2) || (i == 5))
+        {
+					pc.printf("\n\r");
+					pc.printf("_|_|_", *(gptr + i));
+					pc.printf("\n\r");
+        }
+        if (i == 8)
+        {
+					pc.printf("\n\r");
+					pc.printf(" | |", *(gptr + i));
+					pc.printf("\n\r");
+        }
+    }
 }
 
 void cursorDisplay(uint16_t x, uint16_t y)
@@ -330,39 +357,39 @@ void print_cursor(int pos)
     int i = pos;
     if (i == 0)
     {
-        cursorDisplay(20, LINE(3));
+        cursorDisplay(20, LINE(1));
     }
     else if (i == 1)
     {
-        cursorDisplay(40, LINE(3));
+        cursorDisplay(40, LINE(1));
     }
     else if (i == 2)
     {
-        cursorDisplay(60, LINE(3));
+        cursorDisplay(60, LINE(1));
     }
     else if (i == 3)
     {
-        cursorDisplay(20, LINE(8));
+        cursorDisplay(20, LINE(2));
     }
     else if (i == 4)
     {
-        cursorDisplay(40, LINE(8));
+        cursorDisplay(40, LINE(2));
     }
     else if (i == 5)
     {
-        cursorDisplay(60, LINE(8));
+        cursorDisplay(60, LINE(2));
     }
     else if (i == 6)
     {
-        cursorDisplay(20, LINE(13));
+        cursorDisplay(20, LINE(3));
     }
     else if (i == 7)
     {
-        cursorDisplay(40, LINE(13));
+        cursorDisplay(40, LINE(3));
     }
     else if (i == 8)
     {
-        cursorDisplay(60, 60);
+        cursorDisplay(60, LINE(3));
     }
 }
 
