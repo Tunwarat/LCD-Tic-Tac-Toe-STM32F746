@@ -59,6 +59,9 @@ int main()
 
     while (1)
     {
+			lcd.SetFont(&Font24);
+			lcd.DisplayStringAt(0, LINE(2), (uint8_t *)"O's turn", CENTER_MODE);
+			
 			dir = 5;
 			pc.printf("please wait\n\r");
         wait(0.15);
@@ -146,7 +149,7 @@ int main()
                     
 										read_adc();
 									wait(0.5);
-                    if (dir == 0)
+                    if (dir == 0) //thumb
                     {
                         cpos = 0;
                         clean_grid(gptr);
@@ -193,7 +196,7 @@ bool game_over(char *gptr, char a)
     }
 }
 
-bool select(bool xturn, int cpos, char *gptr)
+bool select(bool xturn, int cpos, char *gptr) //*gptr = *0
 {
     if (xturn)
     {
@@ -206,9 +209,9 @@ bool select(bool xturn, int cpos, char *gptr)
     return !xturn;
 }
 
-bool is_win(char *g, char a)
+bool is_win(char *g, char a) //g = gptr =grid[0] //*0 = value in box
 {
-    if ((a == *(g + 0)) && (a == *(g + 3)) && (a == *(g + 6)))
+    if ((a == *(g + 0)) && (a == *(g + 3)) && (a == *(g + 6))) //a is o/x //check o/x equal the value in that box or not If yes,that box has o/x
     {
         return true;
     }
@@ -267,7 +270,7 @@ void print_grid(char *gptr)
     lcd.DrawLine(0, 90, 480, 90);
     lcd.DrawLine(0, 180, 480, 180);
     int i = 0;
-    for (i = 0; i < 9; i++)
+    for (i = 0; i < 9; i++) //i is box number
     {
         if (i == 0)
         {
